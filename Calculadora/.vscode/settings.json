@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "venv/bin/python3",
+    "code-runner.executorMap": {
+        "python3": "clear && venv/bin/python3",
+    }
+}

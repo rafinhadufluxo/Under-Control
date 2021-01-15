@@ -22,6 +22,7 @@ funcao = input("\nDigite sua função: ")
 if operacoes == "Limites" or operacoes == "limites":
   operacoes = input("\nLimites: No ponto, Laterais ou no Infinito")
   if operacoes == "No ponto" or operacoes == "no ponto":
+    print("teste")
   elif operacoes == "Laterais" or operacoes == "laterais":
     limite = input("\nLimite em: ")
     if "Direita":
@@ -29,6 +30,7 @@ if operacoes == "Limites" or operacoes == "limites":
     elif "Esquerda":
       limit(funcao,limite,0,'-')
   elif operacoes == "No infinito" or operacoes == "no infinito":
+    print("terste")
 
 elif operacoes == "Derivadas" or operacoes == "derivadas":
   if variaveis != '1': derivar = input("\nDeseja derivar em função de qual variável? ")
