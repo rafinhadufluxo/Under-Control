@@ -2,8 +2,7 @@
 import tkinter as tk
 from typing import List, Callable
 
-
-class CalculatorGui:
+class CalculatorFunction:
     """ Manages tkinter """
 
     def __init__(
@@ -39,16 +38,15 @@ class CalculatorGui:
         for row in buttons_list:
             for button in row:
                 button_text = button['text']
-                
+
+                # Chama função para mostrar digitos no display 
+                button.bind('<Button-1>', self.add_text_to_display)
+
                 # Clicou chama função para limpar display
                 if button_text == 'C':
                     button.bind('<Button-1>', self.clear_display)
                     button.config(bg='#EA4335', fg='#fff')
-                
-                # Chama função para mostrar digitos no display
-                if button_text in '0123456789.+-/*()^': 
-                    button.bind('<Button-1>', self.add_text_to_display)
-                
+                    
                 # Chama função para realizar os calculos
                 if button_text == '=':
                     button.bind('<Button-1>', self.calculate)
@@ -68,10 +66,10 @@ class CalculatorGui:
             self.label.config(text='Não consegui realizar essa conta, sorry!')
         except Exception:
             self.label.config(text='Conta inválida')
-
+        
     def add_text_to_display(self, event=None) -> None:
         """Add text to display"""
-        self.display.insert('end', event.widget['text'])
+        self.display.insert('end', event.widget['text'].replace("DICAS (use o da direita da igualdade):       |n| = abs(n)       e^n = exp(n)       cos()       sin()", ""))
         self.display.focus()
 
     def clear_display(self, event=None) -> None:

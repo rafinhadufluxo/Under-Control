@@ -4,9 +4,8 @@ from typing import List
 # Cria a janela principal, dando nome e definindo tamanho
 def make_root() -> tk.Tk:
     root = tk.Tk()
-    root.title('Calculator')
-    root.config(padx=10, pady=10, background='#fff')
-    root.resizable(False, False)
+    root.title('Calculadora Plus Plus')
+    root.config(padx=5, pady=5, background='#fff')
     return root
 
 # Cria a Label com o texto "Sem conta ainda" no canto superior direito
@@ -23,7 +22,7 @@ def make_display(root, **grid_options) -> tk.Entry:
     display = tk.Entry(root)
     display.grid(**grid_options)
     display.config(
-        font=('Helvetica', 40, 'bold'),
+        font=('Helvetica', 25, 'bold'),
         justify='right', bd=1, relief='flat',
         highlightthickness=1, highlightcolor='#ccc'
     )
@@ -42,7 +41,7 @@ def make_button(root, text, **grid_options) -> tk.Button:
     btn.grid(**grid_options)
     btn.config(
         font=('Helvetica', 15, 'normal'),
-        pady=25, width=1, background='#f1f2f3', bd=0,
+        pady=20, background='#f1f2f3', bd=0,
         cursor='hand2', highlightthickness=0,
         highlightcolor='#ccc', activebackground='#ccc',
         highlightbackground='#ccc'
@@ -52,10 +51,10 @@ def make_button(root, text, **grid_options) -> tk.Button:
 # Quais botões terá percorrendo a lista de símbolos
 def make_buttons(root, starting_row) -> List[List[tk.Button]]:
     button_texts: List[List[str]] = [
-        ['7', '8', '9', '+', 'C'],
-        ['4', '5', '6', '-', '/'],
-        ['1', '2', '3', '*', '^'],
-        ['0', '.', '(', ')', '='],
+        ['   7   ', '   8   ', '   9   ', '   +   ', 'Limit x->n+ = .', 'C'],
+        ['   4   ', '   5   ', '   6   ', '   -   ', 'Derivar f(x) = .', "Derivar f'(n) = ."],
+        ['   1   ', '   2   ', '   3   ', '   *   ', 'Integrar f(x) = .', "Integrar f(x) (-n,+n') = ."],
+        ['   0   ', '   (   ', '   )   ', '   /   ', '   **   ', '='],
     ]
 
     buttons: List[List[tk.Button]] = []
@@ -65,8 +64,16 @@ def make_buttons(root, starting_row) -> List[List[tk.Button]]:
         for col_index, col_value in enumerate(row_value):
             btn = make_button(
                 root, text=col_value,
-                row=row, column=col_index, sticky='news', padx=5, pady=5
+                row=row, column=col_index, sticky='news', padx=8, pady=8,
             )
             button_row.append(btn)
         buttons.append(button_row)
+    
+    btn = make_button(
+        root, text='DICAS (use o da direita da igualdade):       |n| = abs(n)       e^n = exp(n)       cos()       sin()',
+        row=row+1, column=0, sticky='news', padx=8, pady=8, columnspan=7
+    )
+    button_row.append(btn)
+    buttons.append(button_row)
+
     return buttons

@@ -1,62 +1,36 @@
 import re
 import math
-
-
-def del_invalid_chars(equation: str) -> str:
-    cleaned = equation
-    # Remove all but 0123456789./*-+^e
-    cleaned = re.sub(r'[^\d\.\/\*\-\+\^\(\)e]', r'', cleaned, 0)
-    # Remove duplicated operators (.+/-*^)
-    cleaned = re.sub(r'([\.\+\/\-\*\^])\1+', r'\1', cleaned, 0)
-    # Remove *() or ()
-    cleaned = re.sub(r'\*?\(\)', '', cleaned)
-    return cleaned
-
-
-def solve_exponentiations(equation: str) -> str:
-    exponentiation_regex = re.compile(
-        r'\d+\.?\d*(?:\^|\*\*)\d+\.?\d*', flags=re.S
-    )
-    new_equation = del_invalid_chars(equation)
-    found_equations_in_regex = exponentiation_regex.findall(new_equation)
-
-    while found_equations_in_regex:
-        for equation in found_equations_in_regex:
-            first_number, second_number = re.split(
-                r'(?:\^|\*\*)', equation
-            )
-            solved = math.pow(float(first_number), float(second_number))
-            new_equation = new_equation.replace(equation, str(solved), 1)
-        found_equations_in_regex = exponentiation_regex.findall(
-            new_equation
-        )
-    return new_equation
-
-
-def solve_parentheses(equation: str) -> str:
-    parentheses_regex = re.compile(r'\([\d\^\/\*\-\+\.]+\)', flags=re.S)
-    new_equation = del_invalid_chars(equation)
-    found_equations_in_regex = parentheses_regex.findall(new_equation)
-
-    while found_equations_in_regex:
-        for equation in found_equations_in_regex:
-            exponentiations_solved = solve_exponentiations(equation)
-            result = eval(del_invalid_chars(exponentiations_solved))
-            new_equation = new_equation.replace(equation, str(result), 1)
-        found_equations_in_regex = parentheses_regex.findall(new_equation)
-    return new_equation
-
+import sympy as sy
+from sympy import *
+from sympy.interactive import init_printing
+init_printing(pretty_print=True)
 
 def calculate(equation: str) -> str:
-    cleaned_equation = del_invalid_chars(equation)
+    print("Equação: ", equation)
 
-    try:
-        eq_parenteses_solved = solve_parentheses(cleaned_equation)
-        eq_exponentiation_solved = solve_exponentiations(
-            eq_parenteses_solved
-        )
+    x, y, z = sy.symbols('x y z')
 
-        successfully_solved_equation = eval(eq_exponentiation_solved)
-        return str(successfully_solved_equation)
-    except Exception:
-        raise
+    if 'Limit x->' in equation:
+        f = Lambda(x, equation[14:-1])
+        successfully_solved_equation = limit(f(x), x, int(equation[9]), str(equation[10]))
+
+    if 'Derivar' in equation:
+        if "f'(" in equation:
+            f = Lambda(x, equation[16:-1])
+            f1 = Lambda(x, diff(f(x),x))
+            successfully_solved_equation = f1(int(equation[11:12]))
+        elif "f(" in equation:
+            f = Lambda(x, equation[15:-1])
+            successfully_solved_equation = sy.diff(f(x), x)
+
+    if 'Integrar' in equation:
+        if "f(x) (" in equation:
+            f = Lambda(x, equation[25:-1])
+            print("f: ", f)
+            successfully_solved_equation = integrate(f(x), (x, equation[15:17], equation[18:20]))
+        elif "f(x) =" in equation:
+            f = Lambda(x, equation[16:-1])
+            successfully_solved_equation = integrate(f(x), x)
+    
+    print("Resultado: ", successfully_solved_equation)
+    return str(successfully_solved_equation)
