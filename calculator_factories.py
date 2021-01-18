@@ -51,7 +51,7 @@ def make_button(root, text, **grid_options) -> tk.Button:
 # Quais botões terá percorrendo a lista de símbolos
 def make_buttons(root, starting_row) -> List[List[tk.Button]]:
     button_texts: List[List[str]] = [
-        ['7', '8', '9', '+', 'Limit x->n+ = .', 'C'],
+        ['7', '8', '9', '+', 'Limit x->+n+ = .', 'C'],
         ['4', '5', '6', '-', 'Derivar f(x) = .', "Derivar f'(n) = ."],
         ['1', '2', '3', '*', 'Integrar f(x) = .', "Integrar f(x) (-n,+n') = ."],
         ['0', '(', ')', '/', '**', '='],

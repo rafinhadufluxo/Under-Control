@@ -12,7 +12,9 @@ def calculate(equation: str) -> str:
 
     if 'Limit x->' in equation:
         f = Lambda(x, equation[14:-1])
-        successfully_solved_equation = limit(f(x), x, int(equation[9]), str(equation[10]))
+        print("equation[9:11]: ", equation[9:11])
+        print("str(equation[11]): ", str(equation[11]))
+        successfully_solved_equation = limit(f(x), x, equation[9:11], str(equation[11]))
 
     if 'Derivar' in equation:
         if "f'(" in equation:
